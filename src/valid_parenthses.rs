@@ -8,27 +8,19 @@ impl Solution {
             true;
         }
 
-        let brackets_map = HashMap::from([
-            ('(', ')'),
-            ('[', ']'),
-            ('{', '}')
-        ]);
-
-        let mut expected_close_bracket = LinkedList::new();
+        let mut expected_close_bracket = Vec::new();
 
         for char in s.chars() {
             match char {
                 '(' | '{' | '[' => {
-                    expected_close_bracket.push_front(*brackets_map.get(&char).unwrap());
+                    expected_close_bracket.push_front(char);
                 },
                 ')' | '}' | ']' => {
                     match expected_close_bracket.pop_front() {
-                        None => return false,
-                        Some(expected_bracket) => {
-                            if char != expected_bracket {
-                                return false
-                            }
-                        }
+                        Some('(') if char == ')' => (),
+                        Some('[') if char == ']' => (),
+                        Some('{') if char == '}' => (),
+                        _ => return false
                     }
 
                 },
